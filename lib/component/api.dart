@@ -1,0 +1,1 @@
+const String baseUrl = "https://wavu-endpoint.herokuapp.com/api";
