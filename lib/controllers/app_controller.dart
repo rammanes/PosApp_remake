@@ -13,14 +13,14 @@ class DailyTransactionController extends GetxController implements GetxService{
   List<DailyTransactionModel> _dailyTransactionModel = [];
   bool _isSuccess = false;
   bool _isLoading = false;
-  int _transactionCount = 0;
-  int _dailySales = 0;
+  var _transactionCount = 0.obs;
+  var _dailySales = 0.obs;
   //List<dynamic> dailyTransactionModel;
 
   bool get isSuccess => _isSuccess;
   bool get isLoading => _isLoading;
-  int get transactionCount => _transactionCount;
-  int get dailySales => _dailySales;
+  int get transactionCount => _transactionCount.value;
+  int get dailySales => _dailySales.value;
   List<DailyTransactionModel> get dailyTransactionModel => _dailyTransactionModel;
 
 
@@ -29,20 +29,16 @@ class DailyTransactionController extends GetxController implements GetxService{
     _isLoading = true;
     _isSuccess = false;
     int dailySum = 0;
-    update();
+   // update();
     Response response = await dailyTransactionRepo.getDailyTransaction();
     if(response.statusCode == 200){
-
       _dailyTransactionModel = [];
-      //DailyTransactionModel transactionModel = DailyTransactionModel.fromJson(response.body);
       _dailyTransactionModel.addAll(dailyTransactionModelFromJson(jsonEncode(response.body)));
-      _transactionCount = dailyTransactionModel.length;
+      _transactionCount.value = dailyTransactionModel.length;
        _dailyTransactionModel.forEach((element) {
          dailySum += element.amount;
        });
-       _dailySales = dailySum;
-      print(dailySum);
-      print(_transactionCount);
+       _dailySales.value = dailySum;
       _isLoading = false;
       _isSuccess = true;
       update();

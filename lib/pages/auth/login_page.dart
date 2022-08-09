@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:terminal_app/controllers/network_status_controller.dart';
 import 'package:terminal_app/controllers/user_controller.dart';
 import 'package:terminal_app/data/repository/user_repo.dart';
 import 'package:terminal_app/models/login_model.dart';
@@ -32,6 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
   @override
   Widget build(BuildContext context) {
+    Get.find<NetworkStatusService>();
     return Scaffold(
       backgroundColor: appWhite,
       body: GetBuilder<UserController>(builder: (_userController){

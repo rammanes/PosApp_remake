@@ -1,8 +1,8 @@
 
 import 'package:get/get.dart';
 import 'package:terminal_app/component/app_constant.dart';
-import 'package:terminal_app/models/charge_card_model.dart';
-import 'package:terminal_app/models/login_model.dart';
+import 'package:terminal_app/widget/show_custom_message.dart';
+
 
 class ApiClient extends GetConnect implements GetxService{
   final String appBaseUrl;
@@ -40,9 +40,11 @@ class ApiClient extends GetConnect implements GetxService{
   }
 
 
-  Future<Response> getDailyTransactions(String uri) async {
+  Future<Response> getDailyTransactions(int merchantCode) async {
+    String uriExtension = "/vcards/$merchantCode/dailytransactions";
     try{
-      Response response = await get(uri);
+      Response response = await get('$uriExtension');
+      print('$uriExtension');
       return response;
     }catch(e){
       return Response(statusCode: 1, statusText: e.toString());
@@ -75,6 +77,7 @@ class ApiClient extends GetConnect implements GetxService{
   // get card user information using this method
   Future<Response> getCardUserInfo(String uriBase, String userTagCode) async {
     try{
+      showCustomSnackBar('$uriBase$userTagCode');
       Response response = await get('$uriBase$userTagCode');
       print('$uriBase$userTagCode');
       return response;
@@ -94,7 +97,9 @@ class ApiClient extends GetConnect implements GetxService{
   }
 
 
-  Future<Response> getTerminalTransaction(String url) async {
+  Future<Response> getTerminalTransaction(int merchantCode) async {
+
+    String url = "/pos/merchants/$merchantCode/devices/14";
     try{
       Response response = await get(url, headers: _mainHeaders);
       print(url);

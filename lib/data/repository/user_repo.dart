@@ -19,7 +19,24 @@ class UserRepo{
   bool userLoggedIn() {
     return sharedPreferences.containsKey(AppConstants.USER_ID);
   }
-
+  // void getUser() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //
+  //   userId = prefs.getString("userId");
+  //   print("UserID: "+userId.toString());
+  //   role = prefs.getString("role");
+  //   token = prefs.get("token");
+  //   print("UserToken   "+token.toString());
+  //
+  //   //userId = null;
+  //   setState(() {
+  //     checkUser();
+  //   });
+  //
+  // }
+  Future <String> getStationId() async {
+    return await sharedPreferences.getString(AppConstants.STATION_ID)??"None";
+  }
 
   Future<String> getUserToken() async{
     return await sharedPreferences.getString(AppConstants.TOKEN)??"None";
@@ -49,6 +66,10 @@ class UserRepo{
     sharedPreferences.remove(AppConstants.USER_ID);
     sharedPreferences.remove(AppConstants.MERCHANT_ID);
     sharedPreferences.remove(AppConstants.STATION_ID);
+    sharedPreferences.remove("stationId");
+    sharedPreferences.remove("userId");
+    sharedPreferences.remove("merchantId");
+    sharedPreferences.remove("token");
     apiClient.token="";
     apiClient.updateHeader("");
     return true;

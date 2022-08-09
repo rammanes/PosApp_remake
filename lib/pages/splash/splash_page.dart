@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:terminal_app/component/colors.dart';
 import 'package:terminal_app/controllers/user_controller.dart';
@@ -54,7 +55,16 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
         children: [
           ScaleTransition(
               scale: animationController,
-              child: Center(child: Image.asset("images/ranoLogo.png", width: 120, height: 120,))),
+              child: Center(child: SpinKitDancingSquare(
+                itemBuilder: (BuildContext context, int index) {
+                  return DecoratedBox(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: index.isEven ? Colors.white : Colors.deepOrange,
+                    ),
+                  );
+                },
+              ))),
           const SizedBox(height: 25,),
           const Text("Powered by Wavu", style: TextStyle(
             fontSize: 22,

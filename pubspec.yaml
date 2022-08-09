@@ -18,6 +18,11 @@ dependencies:
   http: ^0.13.4
   flutter_spinkit: ^5.1.0
   intl: ^0.17.0
+  internet_connection_checker: ^0.0.1+4
+  data_connection_checker:
+    git:
+      url: https://github.com/chornthorn/data_connection_checker.git
+      ref: master
 
 dev_dependencies:
   flutter_test:

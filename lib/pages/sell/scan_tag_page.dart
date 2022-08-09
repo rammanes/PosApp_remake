@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -8,13 +6,12 @@ import 'package:nfc_manager/nfc_manager.dart';
 import 'package:terminal_app/component/app_constant.dart';
 import 'package:terminal_app/component/colors.dart';
 import 'package:terminal_app/controllers/scan_controller.dart';
-import 'package:terminal_app/helper/tag_card_dependencies.dart';
 import 'package:terminal_app/models/merchant_model.dart';
 import 'package:terminal_app/pages/sell/scan_confirmation_page.dart';
+import 'package:terminal_app/widget/show_custom_dialog.dart';
 import 'package:terminal_app/widget/show_custom_message.dart';
-
 import '../../routes/routes.dart';
-import '../../widget/custom_loader.dart';
+
 
 class ScanTagPage extends StatefulWidget {
   var category;
@@ -42,6 +39,7 @@ class _ScanTagPageState extends State<ScanTagPage> {
   @override
   void dispose(){
     _timer!.cancel();
+    NfcManager.instance.stopSession();
     super.dispose();
   }
   @override
@@ -125,11 +123,13 @@ class _ScanTagPageState extends State<ScanTagPage> {
   void _tagRead(ScanController scanController){
     NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async{
       result.value = tag.data;
+      showSuccessSnackBar("${result.value}");
       NfcManager.instance.stopSession();
       print(result.value);
       bool isCardDetailsInDB = await scanController.getScanMetaDataFromDB(result.value);
       if(!isCardDetailsInDB){
-        showCustomSnackBar("Card not in database", title: "Not Found Error");
+        // showCustomSnackBar("Card not in database", title: "Not Found Error");
+        showCustomDialog("card not in database", title: "Card Not Found");
       }else{
         MerchantModel merchantModel = scanController.merchantModel!;
         print(merchantModel.profile.name);

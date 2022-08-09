@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:terminal_app/component/colors.dart';
 import 'package:terminal_app/controllers/charge_controller.dart';
+import 'package:terminal_app/controllers/user_controller.dart';
 import 'package:terminal_app/models/charge_card_model.dart';
 import 'package:terminal_app/pages/sell/scan_successful_print.dart';
 import 'package:terminal_app/routes/routes.dart';
@@ -22,6 +24,14 @@ class ScanConfirmationPage extends StatefulWidget {
 
 class _ScanConfirmationPageState extends State<ScanConfirmationPage> {
   TextEditingController pinController = TextEditingController();
+  int? station_id;
+
+  @override
+  void initState(){
+    getUser();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -211,6 +221,7 @@ class _ScanConfirmationPageState extends State<ScanConfirmationPage> {
       if(checkPinMatch!=0){
         showCustomSnackBar("Pin mismatch", title: "Incorrect Pin");
       }else{
+        print(station_id);
         var modelInfoBase = widget.merchantModel;
         int deviceId = 14;
         int merchantId = modelInfoBase.merchantId;
@@ -223,6 +234,7 @@ class _ScanConfirmationPageState extends State<ScanConfirmationPage> {
            merchantId: merchantId,
            vcardId: vcardId,
            amount: amount,
+           station_id: station_id!,
            product: product,
            location: location
        );
@@ -239,5 +251,12 @@ class _ScanConfirmationPageState extends State<ScanConfirmationPage> {
     }else{
       showCustomSnackBar("Pin field can't be empty", title: "Enter Pin");
     }
+  }
+
+  void getUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    station_id = prefs.getInt('stationId');
+    print("Station Id   "+station_id.toString());
+
   }
 }

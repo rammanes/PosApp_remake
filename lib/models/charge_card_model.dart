@@ -10,6 +10,7 @@ class ChargeCardPayloadModel {
     required this.merchantId,
     required this.vcardId,
     required this.amount,
+    required this.station_id,
     required this.product,
     required this.location,
   });
@@ -18,6 +19,7 @@ class ChargeCardPayloadModel {
   int merchantId;
   int vcardId;
   int amount;
+  int station_id;
   String product;
   String location;
 
@@ -26,6 +28,7 @@ class ChargeCardPayloadModel {
     merchantId: json["merchant_id"],
     vcardId: json["vcard_id"],
     amount: json["amount"],
+    station_id: json["station_id"],
     product: json["product"],
     location: json["location"],
   );
@@ -35,6 +38,7 @@ class ChargeCardPayloadModel {
     "merchant_id": merchantId,
     "vcard_id": vcardId,
     "amount": amount,
+    "station_id":station_id,
     "product": product,
     "location": location,
   };
